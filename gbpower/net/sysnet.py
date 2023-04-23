@@ -37,11 +37,14 @@ def create_sysnet(branchs, gens, num_node):
     x1_branch = branchs[:, 3]
     x0_branch = branchs[:, 4]
 
+    type_branch = type_branch.astype(int)
+    nodes_branch = nodes_branch.astype(int)
+
     for t, n, x1, x0 in zip(type_branch, nodes_branch, x1_branch, x0_branch):
         net.add_edge(*n)
         net.edges[n]['type'] = t
-        net.edges[n]['x1'] = x1
-        net.edges[n]['x0'] = x0
+        net.edges[n]['y1'] = round(1./x1, 4)
+        net.edges[n]['y0'] = round(1./x0, 4)
 
 
     # connect gens to system
@@ -49,6 +52,10 @@ def create_sysnet(branchs, gens, num_node):
     x1_gens = gens[:, 1]
     x2_gens = gens[:, 2]
 
+    node_gens = node_gens.astype(int)
+
     for n, x1, x2 in zip(node_gens, x1_gens, x2_gens):
-        net.nodes[n]['x1'] = x1
-        net.nodes[n]['x2'] = x2
+        net.nodes[n]['y1'] = round(1./x1, 4)
+        net.nodes[n]['y2'] = round(1./x2, 4)
+
+    return net
