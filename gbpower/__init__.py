@@ -1,3 +1,3 @@
 import gbpower.net
-import gbpower.cal_sc
+import gbpower.cal
 

@@ -2,6 +2,14 @@ import scipy
 import numpy as np
 import networkx as nx
 
+def create_ymatrix(net):
+
+    Y0 = create_ymatrix_zero(net)
+    Y1 = create_ymatrix_postive(net)
+    Y2 = create_ymatrix_nagative(net)
+
+    return [Y0, Y1, Y2]
+
 def create_ymatrix_postive(net):
     '''
     :param net:
@@ -91,3 +99,7 @@ def create_ymatrix_zero(net):
     for node in net.nodes:
         sumi_row = sum_row[node - 1]
         y_matrix[node - 1][node - 1] = - sumi_row
+
+    return y_matrix
+
+
