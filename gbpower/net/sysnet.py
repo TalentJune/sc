@@ -43,8 +43,8 @@ def create_sysnet(branchs, gens, num_node):
     for t, n, x1, x0 in zip(type_branch, nodes_branch, x1_branch, x0_branch):
         net.add_edge(*n)
         net.edges[n]['type'] = t
-        net.edges[n]['y1'] = round(1./x1, 4)
-        net.edges[n]['y0'] = round(1./x0, 4)
+        net.edges[n]['y1'] = round(1./(1j*x1), 4)
+        net.edges[n]['y0'] = round(1./(1j*x0), 4)
 
 
     # connect gens to system
@@ -55,7 +55,10 @@ def create_sysnet(branchs, gens, num_node):
     node_gens = node_gens.astype(int)
 
     for n, x1, x2 in zip(node_gens, x1_gens, x2_gens):
-        net.nodes[n]['y1'] = round(1./x1, 4)
-        net.nodes[n]['y2'] = round(1./x2, 4)
+        net.nodes[n]['y1'] = round(1./(1j*x1), 4)
+        net.nodes[n]['y2'] = round(1./(1j*x2), 4)
+
+    # nodes number optimization --tiny-1
+    #net = nx.convert_node_labels_to_integers(net, 1, 'increasing degree')
 
     return net
