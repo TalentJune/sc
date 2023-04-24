@@ -24,11 +24,29 @@ def create_sysnet(branchs, gens, num_node):
     '''
 
     net = nx.Graph()
+    '''
+    net
+    
+    nodes[
+    'y1': reciprocal of gens' xd''
+    'y2': reciprocal of gens' x2
+    'gen' whether to connect to gens
+    ]
+    
+    branchs[
+    'type': type of branch
+    'y1': reciprocal of transmisson line or transformer x1
+    'y0': reciprocal of transmisson line or transformer x0
+    ]
+    '''
 
 
     # create buses
     for i in range(1, num_node+1):
         net.add_node(i)
+        net.nodes[i]['y1'] = 0
+        net.nodes[i]['y2'] = 0
+        net.nodes[i]['gen'] = False
 
 
     # create branches
@@ -43,11 +61,12 @@ def create_sysnet(branchs, gens, num_node):
     for t, n, x1, x0 in zip(type_branch, nodes_branch, x1_branch, x0_branch):
         net.add_edge(*n)
         net.edges[n]['type'] = t
-        net.edges[n]['y1'] = round(1./(1j*x1), 4)
-        net.edges[n]['y0'] = round(1./(1j*x0), 4)
+        net.edges[n]['y1'] = -1j*round(1./(x1), 4)
+        net.edges[n]['y0'] = -1j*round(1./(x0), 4)
 
 
     # connect gens to system
+    # the y1, y2 of nodes are symbols of gens' y1, y2
     node_gens = gens[:, 0]
     x1_gens = gens[:, 1]
     x2_gens = gens[:, 2]
@@ -55,8 +74,9 @@ def create_sysnet(branchs, gens, num_node):
     node_gens = node_gens.astype(int)
 
     for n, x1, x2 in zip(node_gens, x1_gens, x2_gens):
-        net.nodes[n]['y1'] = round(1./(1j*x1), 4)
-        net.nodes[n]['y2'] = round(1./(1j*x2), 4)
+        net.nodes[n]['y1'] = -1j*round(1./(x1), 4)
+        net.nodes[n]['y2'] = -1j*round(1./(x2), 4)
+        net.nodes[n]['gen'] = True
 
     # nodes number optimization --tiny-1
     #net = nx.convert_node_labels_to_integers(net, 1, 'increasing degree')
