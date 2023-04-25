@@ -95,12 +95,12 @@ def create_sysnet(branchs, gens, num_node):
 # initialize U && I
 def init_net(net):
     for i in net.nodes():
-        net.nodes[i]['u0'] = 1
-        net.nodes[i]['u1'] = 1
-        net.nodes[i]['u2'] = 1
+        net.nodes[i]['U0'] = 1
+        net.nodes[i]['U1'] = 1
+        net.nodes[i]['U2'] = 1
     for i in net.edges():
-        net.edges[i]['i0'] = 0
-        net.edges[i]['i1'] = 0
-        net.edges[i]['i2'] = 0
+        net.edges[i]['I0'] = 0
+        net.edges[i]['I1'] = 0
+        net.edges[i]['I2'] = 0
 
     return net

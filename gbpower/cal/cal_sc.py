@@ -51,7 +51,25 @@ def calculate_sc_current(data, f_node, type):
         I2_f = -I1_f*(Z0[f_node][f_node]/(Z2[f_node][f_node]+Z0[f_node][f_node]))
         I0_f = -I1_f*(Z2[f_node][f_node]/(Z2[f_node][f_node]+Z0[f_node][f_node]))
 
-    print('I0:{}, I1:{}, I2:{}'.format(I0_f,I1_f,I2_f))
+    # print('I0:{}, I1:{}, I2:{}'.format(I0_f,I1_f,I2_f))
+    for node in net.nodes():
+        net.nodes[node]['U1'] += -I1_f*Z1[node-1][f_node]
+        net.nodes[node]['U2'] += -I2_f*Z2[node-1][f_node]
+        net.nodes[node]['U0'] += -I0_f*Z0[node-1][f_node]
+
+    for edge in net.edges:
+        ad1_node = edge[0]
+        ad2_node = edge[1]
+        net.edges[edge]['I0'] += (net.nodes[ad1_node]['U0']-net.nodes[ad2_node]['U0'])/(1./net.edges[edge]['y0'])
+        net.edges[edge]['I1'] += (net.nodes[ad1_node]['U1'] - net.nodes[ad2_node]['U1']) / (1. / net.edges[edge]['y1'])
+        net.edges[edge]['I2'] += (net.nodes[ad1_node]['U2'] - net.nodes[ad2_node]['U2']) / (1. / net.edges[edge]['y1'])
+
+    return net
+
+
+
+
+
 
 
 
