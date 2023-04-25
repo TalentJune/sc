@@ -8,6 +8,14 @@ def create_ymatrix(net):
     Y1 = create_ymatrix_postive(net)
     Y2 = create_ymatrix_nagative(net)
 
+    Y0 = np.imag(Y0)
+    Y1 = np.imag(Y1)
+    Y2 = np.imag(Y2)
+
+    Y0 = Y0.astype(float)
+    Y1 = Y1.astype(float)
+    Y2 = Y2.astype(float)
+
     return [Y0, Y1, Y2]
 
 def create_ymatrix_postive(net):
@@ -92,7 +100,10 @@ def create_ymatrix_zero(net):
             y_matrix[col - 1][row - 1] = 0
             y_matrix[row - 1][col - 1] = 0
             if net.nodes[col]['gen'] == False:
-                y_matrix[col-1][col-1] += net[col][row]['y0']
+                y_matrix[col-1][col-1] -= net[col][row]['y0']
+            else:
+                y_matrix[row-1][row-1] -= net[col][row]['y0']
+
 
     # self admittance
     sum_row = y_matrix.sum(axis=0)

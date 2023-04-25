@@ -21,14 +21,14 @@ def calculate_sc_current(data, f_node, type):
     #this part of the code could be optimizing to reduce memory usage
     net = create_sysnet(data[0], data[1], data[2])
 
-    Y0 = create_ymatrix_zero(net)
-    Y1 = create_ymatrix_postive(net)
-    Y2 = create_ymatrix_nagative(net)
+    Y0, Y1, Y2 = create_ymatrix(net)
     Z0, Z1, Z2 = get_zmatrix([Y0, Y1, Y2])
 
     I0_f = 0.
     I1_f = 0.
     I2_f = 0.
+
+    f_node = f_node - 1
 
 
     if type == '3ph':

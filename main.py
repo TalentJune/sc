@@ -17,7 +17,7 @@ if __name__ == '__main__':
     gens = np.array(gens)
     data = [branchs, gens, 39]
 
-    gbp.cal.calculate_sc_current(data, 11, '1ph')
+    gbp.cal.calculate_sc_current(data, 11, '2f')
     net = gbp.net.create_sysnet(branchs, gens, 39)
     Y = gbp.net.create_ymatrix(net)
     Z = gbp.net.get_zmatrix(Y)
