@@ -31,12 +31,18 @@ def create_sysnet(branchs, gens, num_node):
     'y1': reciprocal of gens' xd''
     'y2': reciprocal of gens' x2
     'gen' whether to connect to gens
+    'u0'
+    'u1'
+    'u2'
     ]
     
     branchs[
     'type': type of branch
     'y1': reciprocal of transmisson line or transformer x1
     'y0': reciprocal of transmisson line or transformer x0
+    'i0'
+    'i1'
+    'i2'
     ]
     '''
 
@@ -78,7 +84,23 @@ def create_sysnet(branchs, gens, num_node):
         net.nodes[n]['y2'] = -1j*round(1./(x2), 4)
         net.nodes[n]['gen'] = True
 
+    net = init_net(net)
+
     # nodes number optimization --tiny-1
     #net = nx.convert_node_labels_to_integers(net, 1, 'increasing degree')
+
+    return net
+
+
+# initialize U && I
+def init_net(net):
+    for i in net.nodes():
+        net.nodes[i]['u0'] = 1
+        net.nodes[i]['u1'] = 1
+        net.nodes[i]['u2'] = 1
+    for i in net.edges():
+        net.edges[i]['i0'] = 0
+        net.edges[i]['i1'] = 0
+        net.edges[i]['i2'] = 0
 
     return net
